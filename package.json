@@ -43,7 +43,7 @@
     "mongoose": "^4.0.6",
     "morgan": "^1.6.1",
     "multer": "0.1.8",
-    "mws-sdk": "^0.9.7",
+    "mws-sdk": "git+https://github.com/ticadia/mws-sdk.git",
     "node-pre-gyp": "0.6.4",
     "nodemailer": "^1.4.0",
     "passport": "~0.2.2",
