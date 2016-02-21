@@ -4,6 +4,12 @@
  * NOTE: The json report object will contain ReportId and ReportRows where ReportRows is an array of row objects with 
  * 	the report column headers as keys and corresponding data as value
  * NOTE: If an error occures the callback will be sent a json object with a single key value pair as Error:ERROR_MESSAGE
+ *
+ * ReportObject contains
+ * {
+ * 	ReportId : String
+ * 	ReportRows : [ {} ]
+ * }
 */
 
 // variables for configuration
@@ -23,25 +29,23 @@ const REQUEST_WAIT_TIME = 60 * 1000,
 			MAX_REQUEST_CHECKS = 5;
 
 //Get Report function to be used externally
-var GetCustomerReturns = exports.GetCustomerReturns = function(startDate, endDate, callback) {
+//NOTE: Date range can be anything
+var GetCustomerReturnsReport = exports.GetCustomerReturnsReport = function(startDate, endDate, callback) {
 	const REPORT_TYPE = '_GET_FBA_FULFILLMENT_CUSTOMER_RETURNS_DATA_';
-
 	RequestReport(callback, REPORT_TYPE, startDate, endDate);
 }
 
 //Get Report function to be used externally
-var GetWarehouseInventory = exports.GetWarehouseInventory = function (callback) {
+var GetWarehouseInventoryReport = exports.GetWarehouseInventoryReport = function (callback) {
 	//Get the report will all the items in the warehouse, contains skus, asins, quantity, ect
 	const REPORT_TYPE = '_GET_FBA_MYI_UNSUPPRESSED_INVENTORY_DATA_';
-
 	RequestReport(callback, REPORT_TYPE);
 }
 
 //Get Report function to be used externally
-var GetFulfilledOrders = exports.GetFulfilledOrders = function (startDate, endDate, callback) {
-	//Get the report for fulfilled orders with startdate and enddate and they must be 1 month different!
+var GetFulfilledOrdersReport = exports.GetFulfilledOrdersReport = function (startDate, endDate, callback) {
+	//Get the report for fulfilled orders with startdate and enddate and they must be LESS THEN 1 month different!
 	const REPORT_TYPE = '_GET_AMAZON_FULFILLED_SHIPMENTS_DATA_';
-	
 	//NOTE: Report will get cancelled if the dates are more than a month apart (Or as i found even if
 	//they are exactly ONE month apart...
 	RequestReport(callback, REPORT_TYPE, startDate, endDate);
@@ -138,8 +142,8 @@ var GetReportByRequestId = function(reqId, callback, extra) {
 				//Add some stuff into the jReport?
 				//jReport.ReportType = reportType;
 				//jReport.ReportProcessingStatus = reportProcStatus;
-				//jReport.StartedProcessingDate = startProcDate;
-				//jReport.EndProcessingDate = endProcDate;
+				//jReport.ReportStartProcessingDate = startProcDate;
+				jReport.ReportEndProcessingDate = endProcDate;
 				//Maybe not
 				callback(jReport);
 			});

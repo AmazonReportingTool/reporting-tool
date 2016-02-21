@@ -210,6 +210,9 @@ module.exports = function (grunt) {
   // Making grunt default to force in order not to break the project.
   grunt.option('force', true);
 
+	// Run the scheduler script
+	
+
   // Make sure upload directory exists
   grunt.task.registerTask('mkdir:upload', 'Task that makes sure upload directory exists.', function () {
     // Get the callback
