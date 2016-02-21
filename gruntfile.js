@@ -85,7 +85,7 @@ module.exports = function (grunt) {
     },
     concurrent: {
       default: ['nodemon', 'watch'],
-      debug: ['nodemon', 'watch', 'node-inspector'],
+      debug: ['nodemon', 'watch'],
       options: {
         logConcurrentOutput: true
       }
@@ -155,19 +155,6 @@ module.exports = function (grunt) {
             return src.replace('/less/', '/css/');
           }
 				}]
-      }
-    },
-    'node-inspector': {
-      custom: {
-        options: {
-          'web-port': 1337,
-          'web-host': 'localhost',
-          'debug-port': 5858,
-          'save-live-edit': true,
-          'no-preload': true,
-          'stack-trace-limit': 50,
-          'hidden': []
-        }
       }
     },
     mochaTest: {
