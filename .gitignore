@@ -5,6 +5,10 @@ ehthumbs.db
 Icon?
 Thumbs.db
 
+# Tern auto-completion
+# ====================
+.tern-project
+
 # Node and related ecosystem
 # ==========================
 .nodemonignore
