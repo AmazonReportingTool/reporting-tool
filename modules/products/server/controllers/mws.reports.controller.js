@@ -220,14 +220,14 @@ var GetLatestReportByType = function(reportType, callback) {
 		//pffft naaa fk it
 	});
 }
-
+/*
 var eDate = new Date();
 eDate.setHours(0,0,0,0);
 var sDate = new Date(eDate.getFullYear(), eDate.getMonth() - 1, eDate.getDate() + 15);
 GetFulfilledOrdersReport(sDate, eDate, function(result) {
 	console.log(JSON.stringify(result, null, 2));
 });
-
+*/
 /*
 GetWarehouseInventoryReport(function(result) {
 	console.log(JSON.stringify(result, null, 2));
