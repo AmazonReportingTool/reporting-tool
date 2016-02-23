@@ -14,10 +14,7 @@
 
 // variables for configuration
 var config = require('../../../../config/env/local'),
-    path = require('path'),
-		//ReportStringParser.js Must be in same directory as this
-		//Perhaps we can standarize files like this or maybe just slap it in here
-		rParser = require('./ReportStringParser');
+    path = require('path');
 
 // variables to set up mws client
 var MWS = require('mws-sdk'),
@@ -87,7 +84,7 @@ var RequestReport = function(callback, reportType, startDate, endDate) {
 
 			setTimeout(function() {
 				GetReportByRequestId(reportRequestId, callback);
-			}, REQUEST_WAIT_TIME);
+			}, REQUEST_WAIT_TIME/2);
 		} else {
 			//Request failed
 			callback({ 'Error' : 'ReportRequest failed for ' + reportType + '\n' +
@@ -186,7 +183,7 @@ var GetReportById = function(id, callback) {
 
 		//Result contains a string with the report data
 		//It must be parsed
-		var reportRows = rParser.parseReport(result);
+		var reportRows = MWS.ReportParser(result);
 		//reportRows is now just an array of row objects we must package that into an appropriate package
 		var jReport = { 'ReportId': id,
 										'ReportRows':reportRows	};
@@ -224,16 +221,15 @@ var GetLatestReportByType = function(reportType, callback) {
 	});
 }
 
-/*
 var eDate = new Date();
 eDate.setHours(0,0,0,0);
-var sDate = new Date(eDate.getFullYear(), eDate.getMonth() - 1, eDate.getDate() + 1);
-GetFulfilledOrders(sDate, eDate, function(result) {
+var sDate = new Date(eDate.getFullYear(), eDate.getMonth() - 1, eDate.getDate() + 15);
+GetFulfilledOrdersReport(sDate, eDate, function(result) {
 	console.log(JSON.stringify(result, null, 2));
 });
-*/
+
 /*
-GetWarehouseInventory(function(result) {
+GetWarehouseInventoryReport(function(result) {
 	console.log(JSON.stringify(result, null, 2));
 });
 */
