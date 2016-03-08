@@ -64,7 +64,7 @@ var OrderReportSchema = new Schema({
     type: String,
     default: '',
     trim: true
-  }
+  },
   buyerName: {
     type: String,
     default: '',
@@ -239,6 +239,24 @@ var OrderReportSchema = new Schema({
     type: String,
     default: '',
     trim: true
+  },
+  fees: {
+    FBAPerOrderFulfillmentFee: {
+      type: Number,
+      default: ''
+    },
+    FBAPerUnitFulfillmentFee: {
+      type: Number,
+      default: ''
+    },
+    FBAWeightBasedFee: {
+      type: Number,
+      default: ''
+    },
+    commission: {
+      type: Number,
+      default: ''
+    }
   },
   user: {
     type: Schema.ObjectId,
