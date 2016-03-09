@@ -49,10 +49,13 @@ describe('Report Controller Unit Tests:', function () {
 
   describe('Orders Report', function () {
     it('should add financial events to the orders report', function (done) {
-			orders.addFinancialEvents(jReport);
-			console.log(JSON.stringify(jReport.ReportRows[0], null, 2));
-			jReport.ReportRows[0].should.have.property('fees');
-			done();
+			this.timeout(60000);
+			orders.ProcessOrdersReport(jReport, function(result) {
+				//result....
+				console.log(JSON.stringify(result.ReportRows, null, 2));
+				result.ReportRows[0].should.have.property('fees');
+				done();
+			});
     });
 		/*
     it('should be able to show an error when try to save without title', function (done) {
