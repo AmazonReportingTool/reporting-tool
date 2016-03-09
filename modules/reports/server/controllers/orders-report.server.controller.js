@@ -43,7 +43,7 @@ function ProcessRowsRecursively(reportObj, counter, callback) {
 				//Run this function again (Recursion)
 				setTimeout(function() {
 					ProcessRowsRecursively(reportObj, c, callback);
-				}, 1000); //With some discipline, <3 amazon
+				}, 1000 * 2); //With some discipline, <3 amazon
 		});
 	} else {
 		//Done
