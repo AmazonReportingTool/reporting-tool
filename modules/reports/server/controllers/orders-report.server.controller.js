@@ -8,6 +8,10 @@ var MWS = require('mws-sdk'),
     marketPlaceId = 'ATVPDKIKX0DER';
 
 var addFinancialEvents = exports.addFinancialEvents = function(reportObj) {
+
+  if(reportObj.Error !== undefined)
+    console.log('Error in Report Object');
+
   for (var i = 0; i < reportObj.ReportRows.length; i++) {
     var newOrder = reportObj.ReportRows[i];
 
@@ -21,6 +25,9 @@ var addFinancialEvents = exports.addFinancialEvents = function(reportObj) {
       if (result.length === 1) {
         result.delete(skuValue);
         newOrder.fees = result;
+
+        console.log('NEW ORDER: \n');
+        console.dir(newOrder);
       }
       else {
         for (var j = 0; j < result.length; j++) {
@@ -33,6 +40,9 @@ var addFinancialEvents = exports.addFinancialEvents = function(reportObj) {
             return {Error: 'SKU does not match within order'};
           }
         }
+
+        console.log('NEW ORDER: \n');
+        console.dir(newOrder);
       }
     });    
   }
@@ -88,12 +98,12 @@ var GetFinancialEvents = function(orderID, callback){
 
     console.dir(skus);
 
-    if (result.ListOrdersResponse.ListOrdersResult[0].NextToken !== undefined) {
-      // Call Financial Events using next token
-    }
+    // if (result.ListOrdersResponse.ListOrdersResult[0].NextToken !== undefined) {
+    //   // Call Financial Events using next token
+    // }
 
     callback(skus);
   })
 };
 
-GetFinancialEvents('002-1022863-7338627');
+//GetFinancialEvents('002-1022863-7338627');

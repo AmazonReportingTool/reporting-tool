@@ -29,21 +29,22 @@ describe('Report Controller Unit Tests:', function () {
 			if (result.Error !== undefined && result.Error.indexOf('CANCELLED') > -1) {
 				reports.GetLatestReportByType('_GET_AMAZON_FULFILLED_SHIPMENTS_DATA_', function(result) {
 					jReport = result;
-					fs.writeFile('orders-report.json', JSON.stringify(result, null, 2));
+					fs.writeFileSync('orders-report.json', JSON.stringify(result, null, 2));
 					done();
 				});
-			}
-			fs.writeFile('orders-report.json', JSON.stringify(result, null, 2));
-			jReport = result;
-			done();
+			} else {
+  			fs.writeFileSync('orders-report.json', JSON.stringify(result, null, 2));
+  			jReport = result;
+  			done();
+      }
 		});
   });
 
   describe('Orders Report', function () {
     it('should add financial events to the orders report', function (done) {
-			orders.addFinancialEvents(jReport);
+			jReport = orders.addFinancialEvents(jReport);
 			console.log(JSON.stringify(jReport.ReportRows[0], null, 2));
-			jReport.ReportRows[0].should.have.property('FBAWeightBasedFee');
+			jReport.ReportRows[0].should.have.property('fees');
 			done();
     });
 		/*
