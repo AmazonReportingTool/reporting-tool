@@ -112,7 +112,7 @@ function GetFinancialEvents(orderID, callback){
 				var feeAmount = parseFloat(feeComponents[j].FeeAmount[0].CurrencyAmount[0], 10);
 				if (feeType === 'FBAPerOrderFulfillmentFee') {
 					//This one is per order so we will just average it amonst the skus in the order
-					sku[feeType] = feeAmount / feeComponents.length;
+					sku[feeType] = feeAmount / ShipmentItem.length;
 				} else if (feeType === 'FBAPerUnitFulfillmentFee'
 						|| feeType === 'FBAWeightBasedFee'
 						|| feeType === 'Commission') {
