@@ -18,7 +18,8 @@ var jReport;
  * Unit tests
  */
 describe('Report Controller Unit Tests:', function () {
-  before(function (done) {
+  before(function () {
+		/*
 		this.timeout(60000 * 3);
 		var eDate = new Date();
 		var sDate = new Date(eDate.getFullYear(), eDate.getMonth(), eDate.getDate() - 10);
@@ -38,6 +39,12 @@ describe('Report Controller Unit Tests:', function () {
   			done();
       }
 		});
+		*/
+		//The way it was meant to be done
+		//Read the .json file
+		jReport = JSON.parse(fs.readFileSync('orders-report.json'));
+		jReport.should.have.property('ReportId');
+		console.log('Report Id: ' + jReport.ReportId);
   });
 
   describe('Orders Report', function () {
