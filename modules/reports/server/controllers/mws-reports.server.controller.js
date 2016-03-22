@@ -9,6 +9,7 @@
  * {
  * 	ReportId : String
  * 	ReportRows : [ {} ]
+ * 	ReportType : String
  * }
 */
 
