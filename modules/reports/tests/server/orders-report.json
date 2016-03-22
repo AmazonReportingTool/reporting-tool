@@ -1,5 +1,6 @@
 {
   "ReportId": "1422364304016869",
+  "ReportType": "_GET_AMAZON_FULFILLED_SHIPMENTS_DATA_",
   "ReportRows": [
     {
       "amazonOrderId": "114-3479001-8591416",
