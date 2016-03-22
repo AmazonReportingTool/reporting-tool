@@ -136,7 +136,7 @@ var GetReportByRequestId = function(reqId, callback, extra) {
 			//The report is hot n ready!!!
 			GetReportById(reportId, function(jReport) {
 				//Add some stuff into the jReport?
-				//jReport.ReportType = reportType;
+				jReport.ReportType = reportType;
 				//jReport.ReportProcessingStatus = reportProcStatus;
 				//jReport.ReportStartProcessingDate = startProcDate;
 				jReport.ReportEndProcessingDate = endProcDate;
