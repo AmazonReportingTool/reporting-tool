@@ -59,6 +59,8 @@ function AddFinancialEvents(rows, counter, callback) {
 	//back to the upper function
 	var orderId = rows[counter].amazonOrderId;
 	GetFinancialEvents(orderId, function(result) {
+		var i = 0;
+
 		//result is an array of skus
 		if (result.Error !== undefined) {
 			//Just callback without editing
@@ -66,9 +68,11 @@ function AddFinancialEvents(rows, counter, callback) {
 			callback(rows, counter);
 			return;
 		}
+
 		do {
-			rows[counter].fees = result;
+			rows[counter].fees = result[i];
 			counter++; //Increment the counter
+			i++;
 			//If this loops more than once no need to run GFE again on same order id
 		} while(counter < rows.length && rows[counter].amazonOrderId === orderId);
 		//Send modified rows back
@@ -120,6 +124,8 @@ function GetFinancialEvents(orderID, callback){
 					//Save the fee
 					sku[feeType] = feeAmount;
 				}
+
+				skus.push(sku);
 			}
 
 			//Yane code
@@ -138,7 +144,6 @@ function GetFinancialEvents(orderID, callback){
 			*/
 
 			//Add the current sku to the skus array
-      skus.push(sku);
     }
 		
 		//TODO?
