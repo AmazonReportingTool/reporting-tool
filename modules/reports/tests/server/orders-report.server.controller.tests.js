@@ -53,7 +53,9 @@ describe('Report Controller Unit Tests:', function () {
 			orders.ProcessOrdersReport(jReport, function(result) {
 				//result....
 				console.log(JSON.stringify(result.ReportRows, null, 2));
-				result.ReportRows[0].should.have.property('fees');
+				for (var i = 0; i < result.ReportRows.length; i++){
+					result.ReportRows[i].should.have.property('fees');
+				}
 				done();
 			});
     });
