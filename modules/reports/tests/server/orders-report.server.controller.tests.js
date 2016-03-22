@@ -55,6 +55,7 @@ describe('Report Controller Unit Tests:', function () {
 				console.log(JSON.stringify(result.ReportRows, null, 2));
 				for (var i = 0; i < result.ReportRows.length; i++){
 					result.ReportRows[i].should.have.property('fees');
+					result.ReportRows[i].fees.should.not.be.type('undefined');
 				}
 				done();
 			});
