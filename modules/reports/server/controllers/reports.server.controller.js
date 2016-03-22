@@ -43,7 +43,7 @@ exports.create = function (jReport, callback) {
 	} else {
 		//Unknown ReportType
 		callback({
-			Error: 'Invalid ReportType';
+			Error: 'Invalid ReportType'
 		});
 		return;
 	}
@@ -118,7 +118,7 @@ exports.delete = function (req, res) {
  * List of Reports takes a mongoose Report and lists
  */
 exports.list = function (Report, callback) {
-  Report.find().sort('Created').limit(100).exec(function (err, docs) {
+  Report.find().sort('_id').limit(100).exec(function (err, docs) {
     if (err) {
 			callback({
         Error: errorHandler.getErrorMessage(err)
@@ -127,6 +127,7 @@ exports.list = function (Report, callback) {
 			callback({
 				Docs: docs
 			});
+		}
   });
 };
 
