@@ -16,62 +16,68 @@ var path = require('path'),
 /**
  * Create a report
  * Will take a jReport object from the mws-reports controller
- * The rows object will will be saved into the corresponding collection
+ * The rows object will be saved into the corresponding collection
  * according to the ReportType
  * _GET_AMAZON_FULFILLED_SHIPMENTS_DATA_
  * _GET_FBA_MYI_UNSUPPRESSED_INVENTORY_DATA_
  * _GET_FBA_FULFILLMENT_CUSTOMER_RETURNS_DATA_
- * Function will return an object with an Error key and a message value
- * or on success the function will return an object with a Report key and
- * Report object as the value.
+ * Function will return, on error, an object with an "Error" key and a message value
+ * or, on success, the function will return an object with a "Report" key and MongooseReport object
+ * and a "Docs" key and an array of documents as the value. NOTE: Docs are the docs that
+ * mongoose succesfully inserted, therefore can be used for verfication
  */
 exports.create = function (jReport, callback) {
 	var report;
 	if (jReport.ReportType === '_GET_AMAZON_FULFILLED_SHIPMENTS_DATA_') {
-		//Handle saving the inventory report
-		
+		//Handle saving orders report
+		//Just set the report to the correct model
+		report = OrdersReport;
 	} else if (jReport.ReportType === '_GET_FBA_MYI_UNSUPPRESSED_INVENTORY_DATA_') {
-
+		//Handle saving the inventory report
+		//NOTE: Auto deletion of stale (30 day old) data must be done within the inventory
+		//report controller
+		report = InventoryReport;
 	} else if (jReport.ReportType === '_GET_FBA_FULFILLMENT_CUSTOMER_RETURNS_DATA_') {
-
+		//Handle saving the returns report
+		report = ReturnsReport;
 	} else {
 		//Unknown ReportType
 		callback({
 			Error: 'Invalid ReportType';
 		});
+		return;
 	}
-  //var report = new Report(jReport.Rows);
-  //report.user = req.user;
 
-	//Save the report
-  report.save(function (err) {
-    if (err) {
-      callback({
-        Error: errorHandler.getErrorMessage(err)
-      });
-    } else {
-			callback({
-				Report: report
-			});
-    }
-  });
+	report.collection.insert(jReport.ReportRows, function(err, docs) {
+		//Simply call the insertcallback function and pass the parent callback
+		InsertCallback(err, docs, report, callback);
+	});
+	
 };
 
 //Insert callback
-function InsertCallback(err, docs) {
-
+function InsertCallback(err, docs, report, callback) {
+	if (err) {
+		callback({
+			Error: errorHandler.getErrorMessage(err)
+		});
+	} else {
+		callback({
+			Report: report, //For the sake of meanjs...
+			Docs: docs
+		});
+	}
 }
 
 /**
- * Show the current report
- */
+ * Show the current report NO USELESS
 exports.read = function (req, res) {
   res.json(req.report);
 };
+*/
 
 /**
- * Update a report
- */
+ * Update a report NO
 exports.update = function (req, res) {
   var report = req.report;
 
@@ -88,9 +94,11 @@ exports.update = function (req, res) {
     }
   });
 };
+ */
 
 /**
- * Delete an report
+ * Delete a report will delete a report based on query (Very unmean :() UNDECIDED
+ * Removing stale inventory docs should be done in the inventory controller
  */
 exports.delete = function (req, res) {
   var report = req.report;
@@ -107,23 +115,23 @@ exports.delete = function (req, res) {
 };
 
 /**
- * List of Reports
+ * List of Reports takes a mongoose Report and lists
  */
-exports.list = function (req, res) {
-  Report.find().sort('-created').populate('user', 'displayName').exec(function (err, reports) {
+exports.list = function (Report, callback) {
+  Report.find().sort('Created').limit(100).exec(function (err, docs) {
     if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
+			callback({
+        Error: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(reports);
-    }
+			callback({
+				Docs: docs
+			});
   });
 };
 
 /**
- * Report middleware
- */
+ * Report middleware NO
 exports.reportByID = function (req, res, next, id) {
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -144,3 +152,4 @@ exports.reportByID = function (req, res, next, id) {
     next();
   });
 };
+ */
