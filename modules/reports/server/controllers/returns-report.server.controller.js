@@ -1,7 +1,7 @@
 'use strict';
 // variables for configuration
 var config = require('../../../../config/env/local'),
-		db = requrie('./reports.server.controller.js');
+		db = require('./reports.server.controller.js');
 
 // variables to set up mws client
 var MWS = require('mws-sdk'),

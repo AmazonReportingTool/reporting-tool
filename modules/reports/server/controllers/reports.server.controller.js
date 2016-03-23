@@ -8,10 +8,10 @@
  */
 var path = require('path'),
   mongoose = require('mongoose'),
-  InventoryReport = mongoose.model('InventoryReport'),
-  ReturnsReport = mongoose.model('ReturnsReport'),
-  OrdersReport = mongoose.model('OrdersReport'),
-  errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
+  //InventoryReport = mongoose.model('InventoryReport'),
+  InventoryReport = require('../models/inventory-report.server.model.js'),
+  ReturnsReport = require('../models/returns-report.server.model.js'),
+  OrdersReport = require('../models/orders-report.server.model.js');
 
 /**
  * Create a report
@@ -47,6 +47,9 @@ exports.create = function (jReport, callback) {
 		});
 		return;
 	}
+
+	//console.log('Inserting report of type: ' + report.modelName);
+	//console.log(jReport.ReportRows);
 
 	report.collection.insert(jReport.ReportRows, function(err, docs) {
 		//Simply call the insertcallback function and pass the parent callback
