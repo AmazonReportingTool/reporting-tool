@@ -46,25 +46,25 @@ var OrderReportSchema = new Schema({
   },
   purchaseDate: {
     type: Date,
-    default: 'No found date'
+    default: null
   },
   paymentsDate: {
     type: Date,
-    default: 'No found date'
+    default: null
   },
   shipmentDate: {
     type: Date,
-    default: 'No found date'
+    default: null
   },
   reportingDate: {
     type: Date,
-    default: 'No found date'
+    default: null
   },
   buyerEmail: {
     type: String,
     default: '',
     trim: true
-  }
+  },
   buyerName: {
     type: String,
     default: '',
@@ -246,4 +246,4 @@ var OrderReportSchema = new Schema({
   }
 });
 
-mongoose.model('OrderReport', OrderReportSchema);
+module.exports = mongoose.model('OrderReport', OrderReportSchema);

@@ -73,4 +73,4 @@ var ReturnsReportSchema = new Schema({
   }
 });
 
-mongoose.model('ReturnsReport', ReturnsReportSchema);
+module.exports = mongoose.model('ReturnsReport', ReturnsReportSchema);
