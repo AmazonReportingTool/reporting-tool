@@ -8,10 +8,12 @@
  */
 var path = require('path'),
   mongoose = require('mongoose'),
-  InventoryReport = mongoose.model('InventoryReport'),
-  ReturnsReport = mongoose.model('ReturnsReport'),
-  OrdersReport = mongoose.model('OrdersReport'),
-  errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
+  //InventoryReport = mongoose.model('InventoryReport'),
+  //ReturnsReport = mongoose.model('ReturnsReport'),
+  //OrdersReport = mongoose.model('OrdersReport');
+  InventoryReport = require('../models/inventory-report.server.model.js'),
+  ReturnsReport = require('../models/returns-report.server.model.js'),
+  OrdersReport = require('../models/orders-report.server.model.js');
 
 /**
  * Create a report
@@ -27,32 +29,19 @@ var path = require('path'),
  * mongoose succesfully inserted, therefore can be used for verfication
  */
 exports.create = function (jReport, callback) {
-	var report;
-	if (jReport.ReportType === '_GET_AMAZON_FULFILLED_SHIPMENTS_DATA_') {
-		//Handle saving orders report
-		//Just set the report to the correct model
-		report = OrdersReport;
-	} else if (jReport.ReportType === '_GET_FBA_MYI_UNSUPPRESSED_INVENTORY_DATA_') {
-		//Handle saving the inventory report
-		//NOTE: Auto deletion of stale (30 day old) data must be done within the inventory
-		//report controller
-		report = InventoryReport;
-	} else if (jReport.ReportType === '_GET_FBA_FULFILLMENT_CUSTOMER_RETURNS_DATA_') {
-		//Handle saving the returns report
-		report = ReturnsReport;
-	} else {
-		//Unknown ReportType
-		callback({
-			Error: 'Invalid ReportType'
-		});
+	var report = getModel(jReport.ReportType);
+	if (report.Error !== undefined) {
+		callback(report);
 		return;
 	}
+
+	//console.log('Inserting report of type: ' + report.modelName);
+	//console.log(jReport.ReportRows);
 
 	report.collection.insert(jReport.ReportRows, function(err, docs) {
 		//Simply call the insertcallback function and pass the parent callback
 		InsertCallback(err, docs, report, callback);
 	});
-	
 };
 
 //Insert callback
@@ -98,27 +87,37 @@ exports.update = function (req, res) {
 
 /**
  * Delete a report will delete a report based on query (Very unmean :() UNDECIDED
- * Removing stale inventory docs should be done in the inventory controller
+ * Removing stale inventory docs should be done in the inventory controller and it should
+ * call this function to remove from the database
+ * query: can be a json object with field:value style query or a mongoose
+ * query returned from 
  */
-exports.delete = function (req, res) {
-  var report = req.report;
+exports.delete = function (reportType, query, callback) {
+	var report = getModel(reportType);
+	if (report.Error !== undefined) {
+		callback(report);
+		return;
+	}
 
-  report.remove(function (err) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.json(report);
-    }
-  });
+	//console.log('Inserting report of type: ' + report.modelName);
+	//console.log(jReport.ReportRows);
+
+	report.remove(query, function(err) {
+		if (err) {
+			callback({ Error: err, ReportType: reportType });
+			return;
+		}
+		callback({ Query: query, ReportType: reportType });
+	});
 };
 
 /**
  * List of Reports takes a mongoose Report and lists
  */
-exports.list = function (Report, callback) {
-  Report.find().sort('_id').limit(100).exec(function (err, docs) {
+exports.list = function (reportType, callback) {
+	var Report = getModel(reportType);
+  Report.find().sort('_id')/*.limit(100)*/.exec(function(err, docs) {
+		//docs is an array of Documents
     if (err) {
 			callback({
         Error: errorHandler.getErrorMessage(err)
@@ -130,6 +129,28 @@ exports.list = function (Report, callback) {
 		}
   });
 };
+
+/**
+ * Function that returns the appropriate report model
+ */
+function getModel(reportStr) {
+	if (reportStr === '_GET_AMAZON_FULFILLED_SHIPMENTS_DATA_') {
+		//Handle saving orders report
+		//Just set the report to the correct model
+		return OrdersReport;
+	} else if (reportStr === '_GET_FBA_MYI_UNSUPPRESSED_INVENTORY_DATA_') {
+		//Handle saving the inventory report
+		//NOTE: Auto deletion of stale (30 day old) data must be done within the inventory
+		//report controller
+		return InventoryReport;
+	} else if (reportStr === '_GET_FBA_FULFILLMENT_CUSTOMER_RETURNS_DATA_') {
+		//Handle saving the returns report
+		return ReturnsReport;
+	} else {
+		//Unknown ReportType
+		return {Error: 'Invalid ReportType'};
+	}
+}
 
 /**
  * Report middleware NO

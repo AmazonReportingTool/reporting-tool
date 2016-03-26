@@ -99,4 +99,4 @@ var InventoryReportSchema = new Schema({
   }
 });
 
-mongoose.model('InventoryReport', InventoryReportSchema);
+module.exports = mongoose.model('InventoryReport', InventoryReportSchema);
