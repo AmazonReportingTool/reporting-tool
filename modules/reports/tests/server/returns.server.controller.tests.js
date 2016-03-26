@@ -8,6 +8,7 @@ var should = require('should'),
 	fs = require('fs'),
 	config = require('../../../../config/env/development'),
 	reports = require('../../server/controllers/mws-reports.server.controller.js'),
+	r = require('../../server/controllers/reports.server.controller.js'),
 	returns = require('../../server/controllers/returns-report.server.controller.js');
 
 //Connect to the mongoose db
@@ -60,11 +61,43 @@ describe('Report Controller Unit Tests:', function () {
 				result.should.not.have.property('Error');
 				//Docs.insertedCount is the number of seccessful inserts
 				insertedIds.push.apply(insertedIds,result.Docs.insertedIds);
-				console.log(JSON.stringify(insertedIds, null, 2));
+				//console.log(JSON.stringify(insertedIds, null, 2));
 				console.log('Uploaded ' + result.Docs.insertedCount + ' docs.');
 				done();
 			});
 		});
+
+		it('should list documents in database', function(done) {
+			//Use functions directly from reports server for testing
+			r.list('_GET_FBA_FULFILLMENT_CUSTOMER_RETURNS_DATA_', 
+				function(result) {
+					//console.log(JSON.stringify(result, null, 2));
+					should.not.exist(result.Error);
+					console.log('Documents in returnsreports collection: ' + result.Docs.length);
+					done();
+				});
+		});
+
+		it('should remove from database', function(done) {
+			r.delete('_GET_FBA_FULFILLMENT_CUSTOMER_RETURNS_DATA_', 
+				{ _id: { '$in': insertedIds } }, 
+				function(result) {
+					//console.log(JSON.stringify(result, null, 2));
+					done();
+				});
+		});
+		
+		it('should list documents in database', function(done) {
+			//Use functions directly from reports server for testing
+			r.list('_GET_FBA_FULFILLMENT_CUSTOMER_RETURNS_DATA_', 
+				function(result) {
+					//console.log(JSON.stringify(result, null, 2));
+					should.not.exist(result.Error);
+					console.log('Documents in returnsreports collection: ' + result.Docs.length);
+					done();
+				});
+		});
+
 		/*
     it('should add financial events to the orders report', function (done) {
 			this.timeout(60000);
@@ -87,7 +120,7 @@ describe('Report Controller Unit Tests:', function () {
     });
 		*/
   });
-
+	/*
   after(function (done) {
 		//Remove all the inserted ids
 		mongoose.model('ReturnsReport').remove({
@@ -100,4 +133,6 @@ describe('Report Controller Unit Tests:', function () {
 			done();
 		});
   });
+
+	*/
 });
