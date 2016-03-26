@@ -7,14 +7,17 @@ var should = require('should'),
   mongoose = require('mongoose'),
 	fs = require('fs'),
 	config = require('../../../../config/env/development'),
-	db = mongoose.connect(config.db.uri),
 	reports = require('../../server/controllers/mws-reports.server.controller.js'),
 	returns = require('../../server/controllers/returns-report.server.controller.js');
+
+//Connect to the mongoose db
+mongoose.connect(config.db.uri);
 
 /**
  * Globals
  */
-var jReport;
+var jReport,
+		insertedIds = [];
 
 /**
  * Unit tests
@@ -56,6 +59,8 @@ describe('Report Controller Unit Tests:', function () {
 				//console.log(JSON.stringify(result, null, 2));
 				result.should.not.have.property('Error');
 				//Docs.insertedCount is the number of seccessful inserts
+				insertedIds.push.apply(insertedIds,result.Docs.insertedIds);
+				console.log(JSON.stringify(insertedIds, null, 2));
 				console.log('Uploaded ' + result.Docs.insertedCount + ' docs.');
 				done();
 			});
@@ -83,11 +88,16 @@ describe('Report Controller Unit Tests:', function () {
 		*/
   });
 
-	/*
-  afterEach(function (done) {
-    Report.remove().exec(function () {
-      User.remove().exec(done);
-    });
+  after(function (done) {
+		//Remove all the inserted ids
+		mongoose.model('ReturnsReport').remove({
+			'_id': {
+				'$in': insertedIds //Nifty
+			}
+		}, function (err) {
+			if (err) console.log(JSON.stringify(err, null, 2));
+			should.not.exist(err);
+			done();
+		});
   });
-	*/
 });
