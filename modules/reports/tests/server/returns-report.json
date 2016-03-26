@@ -1,0 +1,163 @@
+{
+  "ReportId": "1512170547016882",
+  "ReportRows": [
+    {
+      "returnDate": "2016-03-22T15:44:50+00:00",
+      "orderId": "105-9945219-2703465",
+      "sku": "Balenciaga-BA0022-01B",
+      "asin": "B00TIFUKLW",
+      "fnsku": "X000TM5XA7",
+      "productName": "Balenciaga Women's BA22 BA/22 01B Shiny Black Leather Fashion Sunglasses 58mm",
+      "quantity": "1",
+      "fulfillmentCenterId": "SDF9",
+      "detailedDisposition": "SELLABLE",
+      "reason": "APPAREL_TOO_LARGE"
+    },
+    {
+      "returnDate": "2016-03-19T21:18:46+00:00",
+      "orderId": "106-8229088-3612227",
+      "sku": "Mott50-CU1506-Fuchsia-size XL",
+      "asin": "B00PLM7MZI",
+      "fnsku": "X000TTGO3F",
+      "productName": "Mott 50 Frida Top, Fuchsia Basketweave, X-Large",
+      "quantity": "1",
+      "fulfillmentCenterId": "LEX2",
+      "detailedDisposition": "CUSTOMER_DAMAGED",
+      "reason": "APPAREL_TOO_SMALL"
+    },
+    {
+      "returnDate": "2016-03-19T08:02:25+00:00",
+      "orderId": "110-7106759-3021008",
+      "sku": "GlyderApparel-gaicfc-black-size XS",
+      "asin": "B0127M4WF2",
+      "fnsku": "X000TDRTYT",
+      "productName": "Glyder Women's Cardio freak Capri, X-Small, Black",
+      "quantity": "1",
+      "fulfillmentCenterId": "CVG1",
+      "detailedDisposition": "SELLABLE",
+      "reason": "APPAREL_TOO_SMALL"
+    },
+    {
+      "returnDate": "2016-03-19T05:33:46+00:00",
+      "orderId": "105-2164661-2684200",
+      "sku": "BTempted-953203-004-night-size 38D",
+      "asin": "B00SHYEZ0C",
+      "fnsku": "X000UE5K8J",
+      "productName": "b.tempt'd by Wacoal Women's B Captivating Bra Contour, Night, 38D",
+      "quantity": "1",
+      "fulfillmentCenterId": "SDF9",
+      "detailedDisposition": "CUSTOMER_DAMAGED",
+      "reason": "APPAREL_TOO_SMALL"
+    },
+    {
+      "returnDate": "2016-03-17T16:09:40+00:00",
+      "orderId": "113-7518048-4538656",
+      "sku": "Long-1998-785-Ecru-037",
+      "asin": "B00WXSV7AE",
+      "fnsku": "X000RPHMXR",
+      "productName": "Longchamp Small Tote w/ Strap - Roseau Box - Ecru",
+      "quantity": "1",
+      "fulfillmentCenterId": "SDF9",
+      "detailedDisposition": "SELLABLE",
+      "reason": "APPAREL_TOO_SMALL"
+    },
+    {
+      "returnDate": "2016-03-17T13:23:10+00:00",
+      "orderId": "237192",
+      "sku": "Long-1630-737-Cherry-045",
+      "asin": "B00WXSOA1C",
+      "fnsku": "X000RPHM5Z",
+      "productName": "Longchamp Large Handbag - Le Pliage Cuir - Cherry",
+      "quantity": "1",
+      "fulfillmentCenterId": "SDF9",
+      "detailedDisposition": "SELLABLE",
+      "reason": "UNWANTED_ITEM"
+    },
+    {
+      "returnDate": "2016-03-17T07:12:30+00:00",
+      "orderId": "109-6631657-3429819",
+      "sku": "Pjh-Robyn-Black-Size S",
+      "asin": "B00BCQES22",
+      "fnsku": "X000QOKAEH",
+      "productName": "PJ Harlow Robyn Hooded Fitted Hoodie",
+      "quantity": "1",
+      "fulfillmentCenterId": "SDF9",
+      "detailedDisposition": "SELLABLE",
+      "reason": "APPAREL_TOO_SMALL"
+    },
+    {
+      "returnDate": "2016-03-16T16:15:16+00:00",
+      "orderId": "102-1537303-6757847",
+      "sku": "Ugg-ac-11107-Black-Size S",
+      "asin": "B006U3PQNC",
+      "fnsku": "X000QD6M13",
+      "productName": "UGG Women's Mini Bailey Fingerless Glove Black SM",
+      "quantity": "1",
+      "fulfillmentCenterId": "SDF9",
+      "detailedDisposition": "SELLABLE",
+      "reason": "APPAREL_TOO_SMALL"
+    },
+    {
+      "returnDate": "2016-03-16T04:39:01+00:00",
+      "orderId": "102-4303910-8761043",
+      "sku": "LG-MSLFBKT-Blue",
+      "asin": "B00NI5L6WU",
+      "fnsku": "X000RIL89N",
+      "productName": "Swaddle & Shelter Leaf",
+      "quantity": "1",
+      "fulfillmentCenterId": "LEX2",
+      "detailedDisposition": "DEFECTIVE",
+      "reason": "SWITCHEROO"
+    },
+    {
+      "returnDate": "2016-03-15T19:31:43+00:00",
+      "orderId": "111-5674159-3621046",
+      "sku": "GlyderApparel-gaicfc-slgrnepe-size XS",
+      "asin": "B0127P2ZYE",
+      "fnsku": "X000TDSL19",
+      "productName": "Glyder Women's Cardio freak Capri, X-Small, Slate Grey",
+      "quantity": "1",
+      "fulfillmentCenterId": "CVG1",
+      "detailedDisposition": "SELLABLE",
+      "reason": "DID_NOT_LIKE_FABRIC"
+    },
+    {
+      "returnDate": "2016-03-15T05:27:47+00:00",
+      "orderId": "107-5408749-1181009",
+      "sku": "Old-090-Pink Frost-Size 19",
+      "asin": "B00QLDK3W0",
+      "fnsku": "X000RPI99N",
+      "productName": "Old Soles Fringe Boot, Pink Frost, 19 EU(3 M US Infant)",
+      "quantity": "1",
+      "fulfillmentCenterId": "SDF9",
+      "detailedDisposition": "SELLABLE",
+      "reason": "APPAREL_STYLE"
+    },
+    {
+      "returnDate": "2016-03-14T10:45:12+00:00",
+      "orderId": "110-1803292-2086665",
+      "sku": "BTempted-953203-295-aunat-size 34B",
+      "asin": "B00SHYEKVQ",
+      "fnsku": "X000UE5PDT",
+      "productName": "B tempt'd by Wacoal Women's B Captivating Bra Contour, AU Natural, 34B",
+      "quantity": "1",
+      "fulfillmentCenterId": "SDF9",
+      "detailedDisposition": "CUSTOMER_DAMAGED",
+      "reason": "APPAREL_STYLE"
+    },
+    {
+      "returnDate": "2016-03-13T06:23:30+00:00",
+      "orderId": "114-4339998-6852251",
+      "sku": "LG-MSLFBKT-Pink",
+      "asin": "B00NI5L9FY",
+      "fnsku": "X000RILDU7",
+      "productName": "Swaddle & Shelter Leaf",
+      "quantity": "1",
+      "fulfillmentCenterId": "LAS2",
+      "detailedDisposition": "DEFECTIVE",
+      "reason": "SWITCHEROO"
+    }
+  ],
+  "ReportType": "_GET_FBA_FULFILLMENT_CUSTOMER_RETURNS_DATA_",
+  "ReportEndProcessingDate": "2016-03-22T23:04:37+00:00"
+}
