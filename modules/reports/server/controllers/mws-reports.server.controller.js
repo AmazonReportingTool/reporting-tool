@@ -195,7 +195,7 @@ var GetReportById = function(id, callback) {
 //This function is quite scetchy and should be avoided. Purpose is for testing.
 //This function will get the latest report of type reportType from the reportlist
 //In other words the very first one it finds will be returned
-var GetLatestReportByType = function(reportType, callback) {
+var GetLatestReportByType = exports.GetLatestReportByType = function(reportType, callback) {
 	var grl = new MWS.Reports.requests.GetReportList();
 	grl.params.ReportTypes.value = reportType;
 
@@ -210,7 +210,10 @@ var GetLatestReportByType = function(reportType, callback) {
 		for (var i=0; i<res.length; i++) {
 			if (res[i].ReportType[0] === reportType) {
 				//Match
-				GetReportById(res[i].ReportId[0], callback);
+				GetReportById(res[i].ReportId[0], function(result) {
+					result.ReportType = reportType; //Add the ReportType key
+					callback(result);
+				});
 				return;
 			}
 		}
