@@ -54,7 +54,7 @@ describe('Report Controller Unit Tests:', function () {
 		console.log('Report Id: ' + jReport.ReportId);
   });
 
-  describe('Orders Report', function () {
+  describe('Returns Report', function () {
 		it('should add to database', function(done) {
 			returns.ProcessReturnsReport(jReport, function(result) {
 				//console.log(JSON.stringify(result, null, 2));
