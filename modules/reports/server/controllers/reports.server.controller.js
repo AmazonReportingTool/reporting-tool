@@ -116,7 +116,9 @@ exports.delete = function (reportType, query, callback) {
  */
 exports.list = function (reportType, callback) {
 	var Report = getModel(reportType);
-  Report.find().sort('_id')/*.limit(100)*/.exec(function(err, docs) {
+	//WARNING: Without limit the query will take A LONG time most likely
+	//Therefore will only return the first 100
+  Report.find().sort('_id').limit(100).exec(function(err, docs) {
 		//docs is an array of Documents
     if (err) {
 			callback({
