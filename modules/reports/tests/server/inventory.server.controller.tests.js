@@ -60,7 +60,7 @@ describe('Inventory Report Controller Unit Tests:', function () {
   describe('Inventory Report', function () {
 		it('should add to database', function(done) {
 			inventorys.ProcessInventoryReport(jReport, function(result) {
-				//console.log(JSON.stringify(result, null, 2));
+				console.log(JSON.stringify(result, null, 2));
 				result.should.not.have.property('Error');
 				//Docs.insertedCount is the number of seccessful inserts
 				insertedIds.push.apply(insertedIds,result.Docs.insertedIds);
@@ -77,6 +77,8 @@ describe('Inventory Report Controller Unit Tests:', function () {
 					//console.log(JSON.stringify(result, null, 2));
 					should.not.exist(result.Error);
 					console.log('Documents in returnsreports collection: ' + result.Docs.length);
+					should.exist(result.Docs[0].created);
+					result.Docs[0].created.should.not.be.type('undefined');
 					done();
 				});
 		});
@@ -89,7 +91,7 @@ describe('Inventory Report Controller Unit Tests:', function () {
 					done();
 				});
 		});
-		
+
 		it('should list documents in database', function(done) {
 			//Use functions directly from reports server for testing
 			r.list(reportType, 
