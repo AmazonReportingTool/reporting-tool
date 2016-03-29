@@ -11,7 +11,6 @@ var should = require('should'),
 	r = require('../../server/controllers/reports.server.controller.js'),
 	inventorys = require('../../server/controllers/inventory-report.server.controller.js');
 
-
 /**
  * Globals
  */
@@ -60,7 +59,7 @@ describe('Inventory Report Controller Unit Tests:', function () {
   describe('Inventory Report', function () {
 		it('should add to database', function(done) {
 			inventorys.ProcessInventoryReport(jReport, function(result) {
-				console.log(JSON.stringify(result, null, 2));
+				//console.log(JSON.stringify(result, null, 2));
 				result.should.not.have.property('Error');
 				//Docs.insertedCount is the number of seccessful inserts
 				insertedIds.push.apply(insertedIds,result.Docs.insertedIds);
