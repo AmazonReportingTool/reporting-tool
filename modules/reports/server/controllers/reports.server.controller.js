@@ -36,10 +36,11 @@ exports.create = function (jReport, callback) {
 	}
 
 	//console.log('Inserting report of type: ' + report.modelName);
-	//console.log(jReport.ReportRows);
+	//console.log(report);
 
 	report.collection.insert(jReport.ReportRows, function(err, docs) {
 		//Simply call the insertcallback function and pass the parent callback
+		//console.log('Inserted');
 		InsertCallback(err, docs, report, callback);
 	});
 };

@@ -12,7 +12,7 @@ var mongoose = require('mongoose'),
 var InventoryReportSchema = new Schema({
 	created: {
 		type: Date,
-		required: true
+		default: Date.now
 	},
   sku: {
     type: String,
