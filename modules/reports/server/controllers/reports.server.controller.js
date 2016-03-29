@@ -36,11 +36,12 @@ exports.create = function (jReport, callback) {
 	}
 
 	//console.log('Inserting report of type: ' + report.modelName);
-	//console.log(jReport.ReportRows);
+	//console.log(jReport);
 
 	report.collection.insert(jReport.ReportRows, function(err, docs) {
+		//console.log(docs);
 		//Simply call the insertcallback function and pass the parent callback
-		InsertCallback(err, docs, report, callback);
+		InsertCallback(err, docs, jReport, callback);
 	});
 };
 
@@ -116,7 +117,7 @@ exports.delete = function (reportType, query, callback) {
  */
 exports.list = function (reportType, callback) {
 	var Report = getModel(reportType);
-  Report.find().sort('_id')/*.limit(100)*/.exec(function(err, docs) {
+  Report.find().sort('_id').limit(100).exec(function(err, docs) {
 		//docs is an array of Documents
     if (err) {
 			callback({

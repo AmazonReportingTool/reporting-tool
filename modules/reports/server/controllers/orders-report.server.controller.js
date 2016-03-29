@@ -1,6 +1,7 @@
 'use strict';
 // variables for configuration
-var config = require('../../../../config/env/local');
+var config = require('../../../../config/env/local'),
+		db = require('./reports.server.controller');
 
 // variables to set up mws client
 var MWS = require('mws-sdk'),
@@ -13,7 +14,15 @@ var MWS = require('mws-sdk'),
  *	the value.
  */
 var ProcessOrdersReport = exports.ProcessOrdersReport = function(reportObj, callback) {
-	ProcessRowsRecursively(reportObj, 0, callback);
+	ProcessRowsRecursively(reportObj, 0, function(result) {
+		//Now insert into the database on success
+		//console.log('Done processing');
+		if (result.Error !== undefined) {
+			callback(result);
+		} else {
+			db.create(result, callback);
+		}
+	});
 }
 
 //Will process all the rows of the reportObj in a recursive async manner use 
