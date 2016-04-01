@@ -9,39 +9,38 @@ var should = require('should'),
 	config = require('../../../../config/env/development'),
 	reports = require('../../server/controllers/mws-reports.server.controller.js'),
 	r = require('../../server/controllers/reports.server.controller.js'),
-	returns = require('../../server/controllers/returns-report.server.controller.js');
-
-//Connect to the mongoose db
-mongoose.connect(config.db.uri);
+	inventorys = require('../../server/controllers/inventory-report.server.controller.js');
 
 /**
  * Globals
  */
 var jReport,
-		insertedIds = [];
+		insertedIds = [],
+		reportType = '_GET_FBA_MYI_UNSUPPRESSED_INVENTORY_DATA_';
 
 /**
  * Unit tests
+ * NOTE: Must be run with mocha --timeout 30000 because the collection is too big and it will take a while
+ * for list to work
  */
-describe('Report Controller Unit Tests:', function () {
+describe('Inventory Report Controller Unit Tests:', function () {
   before(function () {
 		/*
 		//Download and save the report locally
 		this.timeout(60000 * 3);
-		var eDate = new Date();
-		var sDate = new Date(eDate.getFullYear(), eDate.getMonth(), eDate.getDate() - 10);
-		reports.GetCustomerReturnsReport(sDate, eDate, function(result) {
+		reports.GetWarehouseInventoryReport(function(result) {
 			console.log(JSON.stringify(result, null, 2));
 			//console.log('Report id: ' + result.ReportId);
+			should.exist(result);
 			result.should.not.be.type('undefined');
 			if (result.Error !== undefined && result.Error.indexOf('CANCELLED') > -1) {
-				reports.GetLatestReportByType('_GET_AMAZON_FULFILLED_SHIPMENTS_DATA_', function(result) {
+				reports.GetLatestReportByType(reportType, function(result) {
 					jReport = result;
-					fs.writeFileSync('orders-report.json', JSON.stringify(result, null, 2));
+					fs.writeFileSync('inventory-report.json', JSON.stringify(result, null, 2));
 					done();
 				});
 			} else {
-				fs.writeFileSync('orders-report.json', JSON.stringify(result, null, 2));
+				fs.writeFileSync('inventory-report.json', JSON.stringify(result, null, 2));
 				jReport = result;
 				done();
 			}
@@ -49,14 +48,17 @@ describe('Report Controller Unit Tests:', function () {
 		*/
 		//The way it was meant to be done
 		//Read the .json file
-		jReport = JSON.parse(fs.readFileSync('./returns-report.json'));
+		jReport = JSON.parse(fs.readFileSync('./inventory-report.json'));
 		jReport.should.have.property('ReportId');
 		console.log('Report Id: ' + jReport.ReportId);
+
+		//Connect to the mongoose db
+		mongoose.connect(config.db.uri);
   });
 
-  describe('Returns Report', function () {
+  describe('Inventory Report', function () {
 		it('should add to database', function(done) {
-			returns.ProcessReturnsReport(jReport, function(result) {
+			inventorys.ProcessInventoryReport(jReport, function(result) {
 				//console.log(JSON.stringify(result, null, 2));
 				result.should.not.have.property('Error');
 				//Docs.insertedCount is the number of seccessful inserts
@@ -69,27 +71,29 @@ describe('Report Controller Unit Tests:', function () {
 
 		it('should list documents in database', function(done) {
 			//Use functions directly from reports server for testing
-			r.list('_GET_FBA_FULFILLMENT_CUSTOMER_RETURNS_DATA_', 
+			r.list(reportType, 
 				function(result) {
 					//console.log(JSON.stringify(result, null, 2));
 					should.not.exist(result.Error);
 					console.log('Documents in returnsreports collection: ' + result.Docs.length);
+					should.exist(result.Docs[0].created);
+					result.Docs[0].created.should.not.be.type('undefined');
 					done();
 				});
 		});
 
 		it('should remove from database', function(done) {
-			r.delete('_GET_FBA_FULFILLMENT_CUSTOMER_RETURNS_DATA_', 
+			r.delete(reportType, 
 				{ _id: { '$in': insertedIds } }, 
 				function(result) {
 					//console.log(JSON.stringify(result, null, 2));
 					done();
 				});
 		});
-		
+
 		it('should list documents in database', function(done) {
 			//Use functions directly from reports server for testing
-			r.list('_GET_FBA_FULFILLMENT_CUSTOMER_RETURNS_DATA_', 
+			r.list(reportType, 
 				function(result) {
 					//console.log(JSON.stringify(result, null, 2));
 					should.not.exist(result.Error);
@@ -98,27 +102,6 @@ describe('Report Controller Unit Tests:', function () {
 				});
 		});
 
-		/*
-    it('should add financial events to the orders report', function (done) {
-			this.timeout(60000);
-			orders.ProcessOrdersReport(jReport, function(result) {
-				//result....
-				console.log(JSON.stringify(result.ReportRows, null, 2));
-				result.ReportRows[0].should.have.property('fees');
-				done();
-			});
-    });
-		*/
-		/*
-    it('should be able to show an error when try to save without title', function (done) {
-      report.title = '';
-
-      return report.save(function (err) {
-        should.exist(err);
-        done();
-      });
-    });
-		*/
   });
 	/*
   after(function (done) {
@@ -136,3 +119,4 @@ describe('Report Controller Unit Tests:', function () {
 
 	*/
 });
+

@@ -29,14 +29,32 @@ const REQUEST_WAIT_TIME = 60 * 1000,
 //NOTE: Date range can be anything
 var GetCustomerReturnsReport = exports.GetCustomerReturnsReport = function(startDate, endDate, callback) {
 	const REPORT_TYPE = '_GET_FBA_FULFILLMENT_CUSTOMER_RETURNS_DATA_';
-	RequestReport(callback, REPORT_TYPE, startDate, endDate);
+	RequestReport(function(result) {
+		//Backup plan for if report gets cancelled
+		if (result.Error !== undefined && result.Error.indexOf('CANCELLED') > -1) {
+			//Attempt one final time with getting the last report created
+			GetLatestReportByType(REPORT_TYPE, callback);
+		} else {
+			callback(result);
+		}
+	}, REPORT_TYPE, startDate, endDate);
 }
 
 //Get Report function to be used externally
+//NOTE: Report will get cancelled if attempted consecutively within 24 hours
+//Hence the backup plane (GetLatestReportByType)
 var GetWarehouseInventoryReport = exports.GetWarehouseInventoryReport = function (callback) {
 	//Get the report will all the items in the warehouse, contains skus, asins, quantity, ect
 	const REPORT_TYPE = '_GET_FBA_MYI_UNSUPPRESSED_INVENTORY_DATA_';
-	RequestReport(callback, REPORT_TYPE);
+	RequestReport(function(result) {
+		//Backup plan for if report gets cancelled
+		if (result.Error !== undefined && result.Error.indexOf('CANCELLED') > -1) {
+			//Attempt one final time with getting the last report created
+			GetLatestReportByType(REPORT_TYPE, callback);
+		} else {
+			callback(result);
+		}
+	}, REPORT_TYPE);
 }
 
 //Get Report function to be used externally
@@ -45,7 +63,15 @@ var GetFulfilledOrdersReport = exports.GetFulfilledOrdersReport = function (star
 	const REPORT_TYPE = '_GET_AMAZON_FULFILLED_SHIPMENTS_DATA_';
 	//NOTE: Report will get cancelled if the dates are more than a month apart (Or as i found even if
 	//they are exactly ONE month apart...
-	RequestReport(callback, REPORT_TYPE, startDate, endDate);
+	RequestReport(function(result) {
+		//Backup plan for if report gets cancelled
+		if (result.Error !== undefined && result.Error.indexOf('CANCELLED') > -1) {
+			//Attempt one final time with getting the last report created
+			GetLatestReportByType(REPORT_TYPE, callback);
+		} else {
+			callback(result);
+		}
+	}, REPORT_TYPE, startDate, endDate);
 }
 
 //The following function will place a request for a report and continue down the chain
@@ -210,7 +236,10 @@ var GetLatestReportByType = exports.GetLatestReportByType = function(reportType,
 		for (var i=0; i<res.length; i++) {
 			if (res[i].ReportType[0] === reportType) {
 				//Match
-				GetReportById(res[i].ReportId[0], callback);
+				GetReportById(res[i].ReportId[0], function(result) {
+					result.ReportType = reportType; //Add the ReportType key
+					callback(result);
+				});
 				return;
 			}
 		}

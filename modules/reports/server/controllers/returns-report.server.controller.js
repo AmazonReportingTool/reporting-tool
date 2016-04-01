@@ -3,11 +3,6 @@
 var config = require('../../../../config/env/local'),
 		db = require('./reports.server.controller.js');
 
-// variables to set up mws client
-var MWS = require('mws-sdk'),
-    client = new MWS.Client(config.accessKeyId, config.secretAccessKey, config.merchantId, {}),
-    marketPlaceId = 'ATVPDKIKX0DER';
-
 /*
  *	This function will take a returns jReport obj and will do the neccessary tasks to insert it into the 
  *	database

@@ -37,6 +37,7 @@ exports.create = function (jReport, callback) {
 
 	//console.log('Inserting report of type: ' + report.modelName);
 	//console.log(jReport);
+	//console.log(report);
 
 	report.collection.insert(jReport.ReportRows, function(err, docs) {
 		//console.log(docs);
@@ -117,6 +118,8 @@ exports.delete = function (reportType, query, callback) {
  */
 exports.list = function (reportType, callback) {
 	var Report = getModel(reportType);
+	//WARNING: Without limit the query will take A LONG time most likely
+	//Therefore will only return the first 100
   Report.find().sort('_id').limit(100).exec(function(err, docs) {
 		//docs is an array of Documents
     if (err) {
