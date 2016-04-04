@@ -20,7 +20,7 @@ function RunReports() {
   endDate = new Date(); //Today midnight
   endDate.setHours(0,0,0,0);
   startDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate() - 1); //1 day ago midnight
-  console.log(startDate + ' - ' + endDate);
+  //console.log(startDate + ' - ' + endDate);
 
   reports.GetWarehouseInventoryReport(ProcInvReport);
   reports.GetCustomerReturnsReport(startDate, endDate, ProcRetReport);
@@ -62,7 +62,7 @@ function ProcOrdReport(jReport) {
     HandleError(jReport);
     return;
   }
-  console.log('Orders Report recieved: ' + JSON.stringify(jReport, null, 2));
+  console.log('Orders Report recieved: ' + jReport.ReportId);
   ordRe.ProcessOrdersReport(jReport, function(result) {
     if (result.Error !== undefined) HandleError(reuslt);
     console.log('Orders Report Complete');
