@@ -47,28 +47,28 @@ Also note the threshold and time frame input fields near the top of the view.  T
 To run the project locally one should clone the repository and run the following commands (with node js and all appropriate mean stack utilities installed)
 
 <br /> 
-'''
+```
 npm install
 npm install mws-sdk
 bower update
 grunt
-'''
+```
 <br />
 
 <b> It is crucial that the user store their credentials in a local.js file located in the /config/env/ directory.</b>
 The program does not currently take credentials from the database but a local js file because up until this point the product was developed for in-house use (see note about not having actual deployment).
 
 <br />
-'''javascript
+```javascript
 module.exports = {
   accessKeyId: 'xxxxxxxxxxx', 
   secretAccessKey: 'xxxxxxxxxxx', 
   merchantId: 'xxxxxxxxxxx'
 };
-'''
+```
 
 The data collection is managed by the scheduled-script.js which will collect neccessary data from the amazon services at the appropriate time (Midnight, every day). The script will also process the information using the appropriate api calls before sending the data to the mongo database. To run, simply use the command <br />
-'''
+```
 nodejs scheduled-script.js
-'''
+```
 in command prompt/terminal.
