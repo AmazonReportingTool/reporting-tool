@@ -128,7 +128,7 @@ var GetReportByRequestId = function(reqId, callback, extra) {
 	client.invoke(grl, function(result) {
 		//Handle the error if the requestid was not found
 		if (result.ErrorResponse !== undefined) {
-			callback({ 'Error': result.ErrorReponse.Error[0]});
+			callback({ 'Error': result.ErrorResponse.Error[0]});
 			return;
 		}
 
@@ -157,7 +157,12 @@ var GetReportByRequestId = function(reqId, callback, extra) {
 		if (reportProcStatus.indexOf('NO_DATA') > -1 || 
 				reportProcStatus.indexOf('CANCELLED') > -1) {
 			//Report is empty...
-			callback({ 'Error' : reportProcStatus });
+			var report = {
+				'ReportType' : reportType,
+				'ReportEndProcessingDate' : endProcDate,
+				'Error' : reportProcStatus 
+			};
+			callback(report);
 		} else if (reportProcStatus.indexOf('DONE') > -1 &&
 				reportId !== undefined) {
 			//The report is hot n ready!!!
