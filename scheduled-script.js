@@ -12,7 +12,7 @@ var reports = require('./modules/reports/server/controllers/mws-reports.server.c
 var startDate, endDate;
 
 //Schedule a function to run everyday at midnight. The function will process all 3 report controllers
-var job = schedule.scheduleJob('0 0 0 * * *', RunReports);
+var job = schedule.scheduleJob('10 0 0 * * *', RunReports);
 //RunReports();
 
 //Callback for the scheduled job
@@ -20,11 +20,23 @@ function RunReports() {
   endDate = new Date(); //Today midnight
   endDate.setHours(0,0,0,0);
   startDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate() - 1); //1 day ago midnight
-  //console.log(startDate + ' - ' + endDate);
+  //Log(startDate + ' - ' + endDate);
 
-  reports.GetWarehouseInventoryReport(ProcInvReport);
-  reports.GetCustomerReturnsReport(startDate, endDate, ProcRetReport);
-  reports.GetFulfilledOrdersReport(startDate, endDate, ProcOrdReport);
+  try {
+		reports.GetWarehouseInventoryReport(ProcInvReport);
+	} catch(err) {
+		Log('Exception caught in inventory report: ' + err);
+	}
+  try {
+		reports.GetCustomerReturnsReport(startDate, endDate, ProcRetReport);
+	} catch(err) {
+		Log('Exception caught in returns report: ' + err);
+	}
+  try {
+		reports.GetFulfilledOrdersReport(startDate, endDate, ProcOrdReport);
+	} catch(err) {
+		Log('Exception caught in orders report: ' + err);
+	}
 }
 
 //Callback for the inventory report function. Arg is the inventory report in json
@@ -34,10 +46,10 @@ function ProcInvReport(jReport) {
     HandleError(jReport);
     return;
   }
-  console.log('Inventory Report recieved: ' + jReport.ReportId);
+  Log('Inventory Report recieved: ' + jReport.ReportId);
   invRe.ProcessInventoryReport(jReport, function(result) {
     if (result.Error !== undefined) HandleError(reuslt);
-    console.log('Inventory Report Complete');
+    Log('Inventory Report Complete');
   });
 }
 
@@ -48,10 +60,10 @@ function ProcRetReport(jReport) {
     HandleError(jReport);
     return;
   }
-  console.log('Returns Report recieved: ' + jReport.ReportId);
+  Log('Returns Report recieved: ' + jReport.ReportId);
   retRe.ProcessReturnsReport(jReport, function(result) {
     if (result.Error !== undefined) HandleError(reuslt);
-    console.log('Returns Report Complete');
+    Log('Returns Report Complete');
   });
 }
 
@@ -62,16 +74,24 @@ function ProcOrdReport(jReport) {
     HandleError(jReport);
     return;
   }
-  console.log('Orders Report recieved: ' + jReport.ReportId);
+  Log('Orders Report recieved: ' + jReport.ReportId);
   ordRe.ProcessOrdersReport(jReport, function(result) {
     if (result.Error !== undefined) HandleError(reuslt);
-    console.log('Orders Report Complete');
+    Log('Orders Report Complete');
   });
 }
 
 //Handle errors
 function HandleError(jReport) {
   var error = jReport.Error;
-  console.log('Error in scheduled script: ' + error);
+  Log('Error in scheduled script: ' + error);
+}
+
+function Log(msg) {
+	var now = new Date();
+	var timeStamp = '' + (now.getMonth() + 1) + '/' + now.getDate() + '/' 
+		+ now.getFullYear() + ' ' + now.getHours() + ':' + now.getMinutes()
+		+ '> ';
+	console.log(timeStamp + msg);
 }
 
