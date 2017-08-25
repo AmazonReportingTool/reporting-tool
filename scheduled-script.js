@@ -13,6 +13,7 @@ var startDate, endDate;
 
 //Schedule a function to run everyday at midnight. The function will process all 3 report controllers
 var job = schedule.scheduleJob('10 0 0 * * *', RunReports);
+Log('Started Scheduled Script...');
 //RunReports();
 
 //Callback for the scheduled job
@@ -90,8 +91,12 @@ function HandleError(jReport) {
 function Log(msg) {
 	var now = new Date();
 	var timeStamp = '' + (now.getMonth() + 1) + '/' + now.getDate() + '/' 
-		+ now.getFullYear() + ' ' + now.getHours() + ':' + now.getMinutes()
+		+ now.getFullYear() + ' ' 
+		+ ("0"+now.getHours()).slice(-2) + ':' 
+		+ ("0"+now.getMinutes()).slice(-2)
 		+ '> ';
+	//Clever solution thanks to 
+	//https://stackoverflow.com/questions/18889548/javascript-change-gethours-to-2-digit
 	console.log(timeStamp + msg);
 }
 
