@@ -106,7 +106,7 @@ var RequestReport = function(callback, reportType, startDate, endDate) {
 			//Request succeeded
 			//Now get the report using the aquired request id
 			//NOTE: Will wait for a bit so that amazon has some time to finish the report
-			console.log('Report requested, waiting before first check. RID:' + reportRequestId);
+			//console.log('Report requested, waiting before first check. RID:' + reportRequestId);
 
 			setTimeout(function() {
 				GetReportByRequestId(reportRequestId, callback);

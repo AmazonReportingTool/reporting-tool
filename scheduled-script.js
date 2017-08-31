@@ -24,16 +24,19 @@ function RunReports() {
   //Log(startDate + ' - ' + endDate);
 
   try {
+		Log('Requesting inventory report...');
 		reports.GetWarehouseInventoryReport(ProcInvReport);
 	} catch(err) {
 		Log('Exception caught in inventory report: ' + err);
 	}
   try {
+		Log('Requesting returns report...');
 		reports.GetCustomerReturnsReport(startDate, endDate, ProcRetReport);
 	} catch(err) {
 		Log('Exception caught in returns report: ' + err);
 	}
   try {
+		Log('Requesting orders report...');
 		reports.GetFulfilledOrdersReport(startDate, endDate, ProcOrdReport);
 	} catch(err) {
 		Log('Exception caught in orders report: ' + err);
